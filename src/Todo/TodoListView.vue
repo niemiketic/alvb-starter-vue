@@ -5,7 +5,7 @@
     fill-height
   >
     <v-layout
-      v-if="$store.state.processing"
+      v-if="processing"
       justify-center
       align-center
       column
@@ -20,7 +20,7 @@
     </v-layout>
 
     <v-layout
-      v-if="!$store.state.processing && this.$data.todos && !this.$data.todos.length"
+      v-if="!processing && this.$data.todos && !this.$data.todos.length"
       justify-center
       align-center
       column
@@ -40,7 +40,7 @@
 
     </v-layout>
 
-    <div v-if="!$store.state.processing && this.$data.todos && this.$data.todos.length">
+    <div v-if="!processing && this.$data.todos && this.$data.todos.length">
       <v-card
         v-for="todo in todos"
         :key="todo.id"
@@ -78,18 +78,29 @@
 </template>
 
 <script>
+const MODULE = 'Todo';
+
 export default {
   name: 'TodoListView',
+
   data: () => ({
     todos: null,
   }),
+
+  computed: {
+    processing() {
+      return this.$store.state.processingByTopic[`${MODULE}.fetchData`] || false;
+    },
+  },
+
   mounted() {
     this.fetchTodoSet();
   },
+
   methods: {
     fetchTodoSet() {
       this.$store
-        .dispatch('todo.fetch')
+        .dispatch('$fetchData')
         .then((response) => {
           this.$data.todos = response;
           // this.$data.todos = [];
@@ -108,7 +119,7 @@ export default {
       todos.splice(todos.indexOf(todo), 1);
 
       // this.$store
-      //   .dispatch('todo.remove', todo.id)
+      //   .dispatch('$removeData', todo.id)
       //   .then((response) => {
       //     const todos = this.$data.todos;
       //     todos.splice(todos.indexOf(todo), 1);

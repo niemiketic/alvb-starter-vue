@@ -3,6 +3,8 @@ import { AuthService } from '../common/Auth.service';
 import { API_ENDPOINT } from '../common/config';
 import * as FetchHelper from '../common/fetch.helper';
 
+const MODULE = 'Todo';
+
 /* eslint no-param-reassign: ["error", { "props": false }] */
 
 const Todo = {
@@ -17,8 +19,8 @@ const Todo = {
   },
 
   actions: {
-    'todo.fetch': (context) => {
-      context.dispatch('processing.start');
+    $fetchData: (context) => {
+      context.dispatch('processing.start', { module: MODULE, operation: 'fetchData' });
 
       return fetch(`${API_ENDPOINT}/todo`, {
         headers: {
@@ -31,10 +33,10 @@ const Todo = {
           context.commit('todo', todoSet);
           return todoSet;
         })
-        .finally(() => context.dispatch('processing.done'));
+        .finally(() => context.dispatch('processing.done', { module: MODULE, operation: 'fetchData' }));
     },
 
-    'todo.add': (context, todo) => {
+    $addData: (context, todo) => {
       context.dispatch('processing.start');
 
       return fetch(`${API_ENDPOINT}/todo/add`, {
@@ -52,7 +54,7 @@ const Todo = {
         .finally(() => context.dispatch('processing.done'));
     },
 
-    'todo.edit': (context, todo) => {
+    $editData: (context, todo) => {
       context.dispatch('processing.start');
 
       return fetch(`${API_ENDPOINT}/todo/${todo.id}/edit`, {
@@ -70,7 +72,7 @@ const Todo = {
         .finally(() => context.dispatch('processing.done'));
     },
 
-    'todo.remove': (context, todoId) => {
+    $removeData: (context, todoId) => {
       context.dispatch('processing.start');
 
       return fetch(`${API_ENDPOINT}/todo/${todoId}/remove`, {

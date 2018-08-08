@@ -10,6 +10,14 @@ import todo from '../Todo/Todo.state';
 
 Vue.use(Vuex);
 
+const INITIAL_PROCESSING_STATE = {
+  processingByTopic: {
+    default: false,
+  },
+  processing: false,
+  message: null,
+};
+
 /* eslint no-param-reassign: ["error", { "props": false }] */
 
 const store = new Vuex.Store({
@@ -28,7 +36,8 @@ const store = new Vuex.Store({
   },
 
   state: {
-    processing: false,
+    processing: INITIAL_PROCESSING_STATE.processing,
+    processingByTopic: INITIAL_PROCESSING_STATE.processingByTopic,
     navigationDrawerVisible: false,
     detailsDrawerVisible: false,
     authenticated: false,
@@ -36,8 +45,33 @@ const store = new Vuex.Store({
   },
 
   mutations: {
-    processing: (state, value = false) => {
-      state.processing = value;
+    processing: (
+      state,
+      payload = {
+        value: false,
+        module: 'App',
+        operation: 'default',
+        message: 'Loading ...',
+      },
+    ) => {
+      const topic = `${payload.module}.${payload.operation}`;
+
+      debug('$processing', topic, payload.message);
+
+      const processingByTopic = {
+        ...state.processingByTopic,
+        [topic]: payload.value,
+      };
+
+      // debugger;
+
+      state.processing = Object.values(processingByTopic).reduce((acc, value) => acc || value, false);
+      state.processingByTopic = processingByTopic;
+    },
+
+    resetProcessing: (state) => {
+      state.processing = INITIAL_PROCESSING_STATE.processing;
+      state.processingByTopic = INITIAL_PROCESSING_STATE.processingByTopic;
     },
 
     navigationDrawerVisible: (state, value = false) => {
@@ -63,12 +97,36 @@ const store = new Vuex.Store({
   },
 
   actions: {
-    'processing.start': (context) => {
-      context.commit('processing', true);
+    'processing.start': (
+      context,
+      payload = {
+        module: 'App',
+        operation: 'default',
+        message: 'Loading ...',
+      },
+    ) => {
+      context.commit('processing', {
+        value: true,
+        ...payload,
+      });
     },
 
-    'processing.done': (context) => {
-      context.commit('processing');
+    'processing.done': (
+      context,
+      payload = {
+        value: false,
+        module: 'App',
+        operation: 'default',
+        message: 'Loading ...',
+      },
+    ) => {
+      context.commit('processing', {
+        ...payload,
+      });
+    },
+
+    'processing.reset': (context) => {
+      context.commit('resetProcessing');
     },
 
     'NavigationDrawer.show': (context) => {
@@ -92,14 +150,14 @@ const store = new Vuex.Store({
     },
 
     'auth.login': (context, { username, password }) => {
-      context.dispatch('processing.start');
+      context.dispatch('processing.start', { module: 'Auth', operation: 'login' });
       return AuthService.login(username, password)
         .then(({ user }) => {
           context.commit('user', user);
           context.commit('authenticated', true);
           return user;
         })
-        .finally(() => context.dispatch('processing.done'));
+        .finally(() => context.dispatch('processing.done', { module: 'Auth', operation: 'login' }));
     },
 
     'auth.signup': (context, { name, email, password }) => {
@@ -123,14 +181,18 @@ const store = new Vuex.Store({
     },
 
     'auth.logout': (context) => {
-      context.dispatch('processing.start');
+      context.dispatch('processing.start', { module: 'Auth', operation: 'logout' });
       return AuthService.logout()
         .then(() => {
+
+          context.commit('resetProcessing'); // TODO: NEED VALIDATION!
+
           context.commit('user');
+          context.commit('todo');
           context.commit('authenticated');
           context.commit('resetDrawers');
         })
-        .finally(() => context.dispatch('processing.done'));
+        .finally(() => context.dispatch('processing.done', { module: 'Auth', operation: 'logout' }));
     },
   },
 

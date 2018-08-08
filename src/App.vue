@@ -15,9 +15,6 @@
 </style>
 
 <script>
-// import Session from './Session.vue';
-// import Entrance from './Entrance.vue';
-
 const Session = () => import(/* webpackChunkName: "Session" */ './Session.vue');
 const Entrance = () => import(/* webpackChunkName: "Entrance" */ './Entrance.vue');
 

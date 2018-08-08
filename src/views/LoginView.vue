@@ -30,7 +30,7 @@
       />
 
       <v-btn
-        :loading="$store.state.processing"
+        :loading="processing"
         :disabled="!isValid"
         class="white--text mt-2"
         block
@@ -63,6 +63,8 @@
 </template>
 
 <script>
+const MODULE = 'Auth';
+
 export default {
   data: () => ({
     username: 'nihel@gmail.com',
@@ -70,6 +72,13 @@ export default {
     isValid: false,
     showPassword: false,
   }),
+
+  computed: {
+    processing() {
+      return this.$store.state.processingByTopic[`${MODULE}.fetchData`] || false;
+    },
+  },
+
   methods: {
     login() {
       this.$store.dispatch('auth.login', {
