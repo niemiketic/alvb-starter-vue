@@ -17,6 +17,7 @@ yarn-error.log*
 # Editor directories and files
 .idea
 .vscode
+.orig
 *.suo
 *.ntvs*
 *.njsproj

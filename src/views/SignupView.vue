@@ -6,9 +6,17 @@
     <v-form
       v-model="isValid"
       class="pt-4">
+      <v-text-field
+        v-model="$data.user.name"
+        :rules="[$validate.required]"
+        validate-on-blur
+        outline
+        color="white"
+        placeholder="Name"
+      />
 
       <v-text-field
-        v-model="$data.username"
+        v-model="$data.user.email"
         :rules="[$validate.required, $validate.email]"
         validate-on-blur
         outline
@@ -17,11 +25,11 @@
       />
 
       <v-text-field
-        v-model="$data.password"
+        v-model="$data.user.password"
         :append-icon="showPassword ? 'visibility_off' : 'visibility'"
         :rules="[$validate.required, $validate.password]"
         :type="showPassword ? 'text' : 'password'"
-        i-validate-on-blur
+        validate-on-blur
         outline
         color="white"
         placeholder="Password"
@@ -30,14 +38,14 @@
       />
 
       <v-btn
-        :loading="processing"
+        :loading="$store.state.processing"
         :disabled="!isValid"
         class="white--text mt-2"
         block
         color="accent"
-        @click="login()"
+        @click="signup()"
       >
-        Log in
+        Sign up
       </v-btn>
     </v-form>
 
@@ -46,13 +54,13 @@
       justify-space-between
       row>
       <v-btn
-        class="white--text"
+        class="white--text text-xs-right"
         right
         flat
-        to="/sign-up">Sign up</v-btn>
+        to="/login">Log in</v-btn>
 
       <v-btn
-        class="white--text"
+        class="white--text text-xs-left"
         left
         flat
         to="/recover"
@@ -60,31 +68,23 @@
     </v-layout>
 
   </div>
+
 </template>
 
 <script>
-const MODULE = 'Auth';
-
 export default {
   data: () => ({
-    username: 'nihel@gmail.com',
-    password: '123456789',
+    user: {
+      name: '',
+      email: '',
+      password: '',
+    },
     isValid: false,
     showPassword: false,
   }),
-
-  computed: {
-    processing() {
-      return this.$store.state.processingByTopic[`${MODULE}.login`] || false;
-    },
-  },
-
   methods: {
-    login() {
-      this.$store.dispatch('auth.login', {
-        username: this.$data.username,
-        password: this.$data.password,
-      });
+    signup() {
+      this.$store.dispatch('auth.signup', this.$data.user);
     },
   },
 };

@@ -18,6 +18,9 @@ npm run dev
 # lint
 npm run lint
 
+# format
+npm run format
+
 # run all tests
 npm test
 

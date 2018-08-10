@@ -3,10 +3,6 @@ import { EventEmitter } from './events';
 import { API_ENDPOINT } from './config';
 import * as FetchHelper from './fetch.helper';
 
-import { createLogger } from './logger';
-
-const Logger = createLogger('AuthService');
-
 export const AuthServiceImplementation = class AuthService {
   events = new EventEmitter();
 

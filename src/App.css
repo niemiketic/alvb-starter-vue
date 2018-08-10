@@ -97,6 +97,7 @@ body {
 @media (min-width: 400px) {
   .-x-view {
     min-width: 300px;
+    /* min-width: 70%; */
   }
 }
 
@@ -124,4 +125,37 @@ body {
 
 .fade-leave-active {
   display: none;
+}
+
+/*
+*   TEXT TRANSFORMATION AND STYLES
+**/
+.text-primary {
+  color: #607d8b;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.text-lowercase {
+  text-transform: lowercase;
+}
+
+.fw-100 {
+  font-weight: 100;
+}
+
+/*
+* ABSOLUTE FAB BUTTON
+**/
+
+.fab-bottom {
+  position: absolute !important;
+  bottom: 16px;
+  right: 16px;
 }

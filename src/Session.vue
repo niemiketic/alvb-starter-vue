@@ -1,5 +1,5 @@
 <template>
-  <v-app light>
+  <v-app>
 
     <v-navigation-drawer
       id="navigationDrawer"
@@ -8,28 +8,18 @@
       temporary
       fixed>
 
-      <!-- <v-list class="pa-1">
-        <v-list-tile avatar tag="div">
+      <v-list
+        class="pa-1"
+        two-line>
+        <v-list-tile avatar >
           <v-list-tile-avatar>
-            <v-icon class="grey">person</v-icon>
-          </v-list-tile-avatar>
-          <v-list-tile-content>
-            <v-list-tile-title>Anonyme</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list> -->
-
-      <v-list class="pa-1">
-        <v-list-tile
-          avatar
-          tag="div">
-          <v-list-tile-avatar tile>
             <img
-              src="./assets/logo.png"
-              style="width: auto;" >
+              :src="this.$store.state.user.picture" >
           </v-list-tile-avatar>
+
           <v-list-tile-content>
-            <v-list-tile-title>Hello World</v-list-tile-title>
+            <v-list-tile-title>{{ this.$store.state.user.name }}</v-list-tile-title>
+            <v-list-tile-sub-title>{{ this.$store.state.user.email }}</v-list-tile-sub-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -87,24 +77,17 @@
     </v-navigation-drawer>
 
     <v-toolbar
+      color="primary"
       app
       fixed
       prominent>
 
       <v-toolbar-side-icon
         id="navigationDrawerTrigger"
-        @click.stop="$store.dispatch('NavigationDrawer.show')">
+        class="white--text"
+        @click.stop="$store.dispatch('NavigationDrawer.show')"/>
 
-        <v-progress-circular
-          v-if="$store.state.processing"
-          :size="20"
-          :width="2"
-          indeterminate/>
-
-      </v-toolbar-side-icon>
-
-
-      <v-toolbar-title>{{ $route.path === '/home' ? 'Hello World' : $route.name }}</v-toolbar-title>
+      <v-toolbar-title class="white--text">{{ $route.name }}</v-toolbar-title>
 
       <v-spacer/>
 
@@ -113,10 +96,10 @@
     </v-toolbar>
 
     <v-content>
-       <v-container
+      <v-container
         fluid
         fill-height
-        class='-x-relative'
+        class="-x-relative"
       >
         <transition name="fade">
           <router-view/>
