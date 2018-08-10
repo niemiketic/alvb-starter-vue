@@ -75,7 +75,7 @@ export default {
 
   computed: {
     processing() {
-      return this.$store.state.processingByTopic[`${MODULE}.fetchData`] || false;
+      return this.$store.state.processingByTopic[`${MODULE}.login`] || false;
     },
   },
 
