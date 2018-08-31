@@ -184,7 +184,6 @@ const store = new Vuex.Store({
       context.dispatch('processing.start', { module: 'Auth', operation: 'logout' });
       return AuthService.logout()
         .then(() => {
-
           context.commit('resetProcessing'); // TODO: NEED VALIDATION!
 
           context.commit('user');

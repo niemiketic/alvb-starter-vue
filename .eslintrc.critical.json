@@ -12,7 +12,15 @@
   "rules": {
     "no-undef": "error",
     "no-redeclare": "error",
-    "no-unused-vars": "warn",
+    "no-unused-vars": [
+      "off",
+      {
+        "vars": "all",
+        "args": "none",
+        "ignoreRestSiblings": false,
+        "varsIgnorePattern": "debug"
+      }
+    ],
     "no-invalid-this": "error"
   }
 }

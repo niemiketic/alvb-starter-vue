@@ -14,7 +14,8 @@
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "test": "npm run test:unit && npm run test:e2e",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "deploy:github": "push-dir --dir=dist --branch=gh-pages --remote=git@github.com:niemiketic/alvb-starter-vue.git"
   },
   "dependencies": {
     "babel-polyfill": "~6.26.0",
@@ -43,10 +44,12 @@
     "babel-jest": "~23.4.2",
     "eslint": "~5.2.0",
     "eslint-config-airbnb-base": "~13.0.0",
+    "eslint-loader": "^2.1.0",
     "eslint-plugin-import": "~2.13.0",
     "eslint-plugin-vue": "~4.7.1",
     "node-sass": "~4.9.0",
     "prettier": "~1.14.0",
+    "push-dir": "^0.4.1",
     "sass-loader": "~7.1.0",
     "stylus": "~0.54.5",
     "stylus-loader": "~3.0.2",

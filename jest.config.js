@@ -5,6 +5,7 @@ module.exports = {
     '.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
     '^.+\\.jsx?$': 'babel-jest',
   },
+  testURL: 'http://localhost/',
   moduleNameMapper: {
     '^~/(.*)$': '<rootDir>/src/$1',
   },
